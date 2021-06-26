@@ -1,0 +1,66 @@
+﻿import java.util.List;
+
+public class GoodiesPickerMain {
+
+  public static void main(String[] args) {
+   System.out.println("Working");
+   
+   String filename = "sample_input.txt";
+   List<String> stringList = ReadFileIntoList.readFileInList(filename);
+   // as per sample_input.txt file
+   // No of employee info at first line
+   int noOfEmployees = GoodiesUtils.getNoOfEmployees(stringList.get(0));
+   // Goodies and price info starts at 5th line
+   List<Goodie> goodieList = GoodiesUtils.readGoodies(stringList.subList(4, stringList.size()));
+   GoodiesPicker goodiesPicker = new GoodiesPicker(goodieList);
+   List<Goodie> goodiesForEmployees = goodiesPicker.getGoodiesForEmployees(noOfEmployees);
+   GoodiesUtils.writeOutputToFile(goodiesForEmployees,goodiesPicker.getMinDifference());
+   System.out.println("Ended");
+
+  }
+
+}
+
+
+
+
+public static int getNoOfEmployees(String sampleInput){
+  int noOfEmployees = 0;
+  
+  try{
+    String[] split = sampleInput.split(regex:":");
+    String fieldString = split[1];
+    noOfEmployees = Integer.valueOf(fieldString.trim());
+    
+  } catch (Exception e){
+    e.printStackTrace();
+  }
+  return noOfEmployees;
+}
+
+public static void writeOutputToFile(List<Goodie> goodiesForEmployees, float minDiff) {
+  String outputFile = "my_output.txt";
+  
+  try{
+    FileWriter fw = new FileWriter(outputFile);
+    
+    PrintWriter printWriter = new PrintWriter(fw);
+    
+    PrintWriter. println("The goodies selected for distribution are:");
+    PrintWriter. println();
+    
+    for (Goodie g: goodiesForEmployees){
+      printWriter.println(g.getName() + ": " + g.getPrice());
+      
+    }
+    
+    printWriter.println("");
+    
+    printWriter.println("And the difference between the chosen goodie with highest price and the lowest price is " + minDiff);
+    printWriter.close();
+    fw.close();
+  }catch (Exception e){
+    System.out.println(e);
+  }
+ }
+}
